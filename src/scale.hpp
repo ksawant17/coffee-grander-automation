@@ -18,7 +18,7 @@
 
 #define TARE_MEASURES 20 // use the average of measure for taring
 #define SIGNIFICANT_WEIGHT_CHANGE 5 // 5 grams changes are used to detect a significant change
-#define COFFEE_DOSE_WEIGHT 18
+#define COFFEE_DOSE_WEIGHT 18 // 18 grams of coffee dose
 #define MAX_GRINDING_TIME 20000 // 20 seconds diff
 #define GRINDING_FAILED_WEIGHT_TO_RESET 500 // force on balance need to be measured to reset grinding
 

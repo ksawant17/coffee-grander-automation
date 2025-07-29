@@ -2,9 +2,11 @@
 #include <Wire.h>
 #include <Adafruit_SSD1306.h>
 #include <Adafruit_GFX.h>
-#include <Fonts/FreeMono9pt7b.h> // Font for all numbers
-#include <Fonts/FreeSans9pt7b.h> // Font for headlines
-#include <Fonts/Picopixel.h> // Small font for labels
+// #include <Fonts/FreeMono9pt7b.h> // Font for all numbers
+// #include <Fonts/FreeSans9pt7b.h> // Font for headlines
+// #include <Fonts/Picopixel.h> // Small font for labels
+#include <GFX_Fonts/Arimo_Regular_12.h>
+#include <GFX_Fonts/Arimo_Regular_15.h>
 
 // Global variables from scale.hpp - these should be declared in scale.cpp
 extern double scaleWeight;
@@ -47,21 +49,20 @@ void updateDisplay(void * parameter) {
     
     // Show weight immediately after initialization, don't wait for significant weight change
     if (scaleLastUpdatedAt == 0) {
-      display.setFont(&FreeSans9pt7b);
-      centerPrintToScreen("Init...", 5, &FreeSans9pt7b);
+      display.setFont(&Arimo_Regular_12);
+      centerPrintToScreen("Init...", 5, &Arimo_Regular_12);
     } else if (!scaleReady) {
-      display.setFont(&FreeSans9pt7b);
-      centerPrintToScreen("SCALE ERROR", 5, &FreeSans9pt7b);
+      display.setFont(&Arimo_Regular_12);
+      centerPrintToScreen("SCALE ERROR", 5, &Arimo_Regular_12);
     } else {
       if (scaleStatus == STATUS_GRINDING_IN_PROGRESS) {
         // Top line: Grinding status
-        display.setFont(&FreeSans9pt7b);
-        centerPrintToScreen("Grinding...", 0, &FreeSans9pt7b);
+        display.setFont(&Arimo_Regular_12);
+        centerPrintToScreen("Grinding...", 0, &Arimo_Regular_12);
 
         // Weight display: current -> target
-        display.setFont(&FreeMono9pt7b);
         snprintf(buf, sizeof(buf), "%3.1fg", scaleWeight - cupWeightEmpty);
-        display.setCursor(0, 30);
+        display.setCursor(2, 30);
         display.print(buf);
 
         // Arrow
@@ -73,38 +74,38 @@ void updateDisplay(void * parameter) {
         display.print(buf);
 
         // Time display at bottom
-        display.setFont(&Picopixel);
+        display.setFont(&Arimo_Regular_15);
         snprintf(buf, sizeof(buf), "%3.1fs", (double)(millis() - startedGrindingAt) / 1000);
-        centerPrintToScreen(buf, 50, &Picopixel);
+        centerPrintToScreen(buf, 50, &Arimo_Regular_15);
         
       } else if (scaleStatus == STATUS_EMPTY) {
         // Weight label
-        display.setFont(&FreeSans9pt7b);
-        centerPrintToScreen("Weight:", 0, &FreeSans9pt7b);
+        display.setFont(&Arimo_Regular_12);
+        centerPrintToScreen("--- Weight ---", 0, &Arimo_Regular_12);
 
         // Weight value
-        display.setFont(&FreeMono9pt7b);
+        display.setFont(&Arimo_Regular_15);
         snprintf(buf, sizeof(buf), "%3.1fg", scaleWeight);
-        centerPrintToScreen(buf, 25, &FreeMono9pt7b);
+        centerPrintToScreen(buf, 25, &Arimo_Regular_15);
         
       } else if (scaleStatus == STATUS_GRINDING_FAILED) {
         // Error message
-        display.setFont(&FreeSans9pt7b);
-        centerPrintToScreen("Grinding failed", 5, &FreeSans9pt7b);
+        display.setFont(&Arimo_Regular_12);
+        centerPrintToScreen("Grinding failed", 0, &Arimo_Regular_12);
 
-        display.setFont(&Picopixel);
-        centerPrintToScreen("Press balance", 15, &Picopixel);
-        centerPrintToScreen("to reset", 25, &Picopixel);
+        display.setFont(&Arimo_Regular_12);
+        centerPrintToScreen("Press balance", 25, &Arimo_Regular_12);
+        centerPrintToScreen("to reset", 38, &Arimo_Regular_12);
         
       } else if (scaleStatus == STATUS_GRINDING_FINISHED) {
         // Success message
-        display.setFont(&FreeSans9pt7b);
-        centerPrintToScreen("Finished!", 0, &FreeSans9pt7b);
+        display.setFont(&Arimo_Regular_12);
+        centerPrintToScreen("-- Finished! --", 0, &Arimo_Regular_12);
 
         // Final weight display
-        display.setFont(&FreeMono9pt7b);
+        display.setFont(&Arimo_Regular_15);
         snprintf(buf, sizeof(buf), "%3.1fg", scaleWeight - cupWeightEmpty);
-        display.setCursor(0, 30);
+        display.setCursor(2, 30);
         display.print(buf);
 
         // Arrow
@@ -117,9 +118,9 @@ void updateDisplay(void * parameter) {
         display.print(buf);
 
         // Time display
-        display.setFont(&Picopixel);
+        display.setFont(&Arimo_Regular_15);
         snprintf(buf, sizeof(buf), "%3.1fs", (double)(finishedGrindingAt - startedGrindingAt) / 1000);
-        centerPrintToScreen(buf, 50, &Picopixel);
+        centerPrintToScreen(buf, 50, &Arimo_Regular_15);
       }
     }
     display.display();
@@ -153,12 +154,12 @@ void setupDisplay() {
   // Clear the buffer again and set up text properties
   display.clearDisplay();
   display.setTextColor(SSD1306_WHITE);
-  display.setFont(&FreeSans9pt7b);
+  display.setFont(&Arimo_Regular_12);
 
   // Test pattern to verify display is working
   display.setCursor(0, 20);
-  display.println("Display Ready!");
-  display.display();
+  // display.println("Display Ready!");
+  // display.display();
   delay(1000);
   display.clearDisplay();
   display.display();
